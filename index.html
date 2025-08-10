@@ -7,12 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); }
-        .receipt-item:hover { background-color: #f8fafc; }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        .receipt-item:hover {
+            background-color: #f8fafc;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        .loading {
+            animation: pulse 1.5s infinite;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
     <div class="container mx-auto p-4">
+        <!-- Header -->
         <header class="flex justify-between items-center mb-8">
             <div>
                 <h1 class="text-3xl font-bold text-blue-600">Kasir Toko Mart</h1>
@@ -21,57 +35,253 @@
             <div class="flex items-center space-x-4">
                 <div class="text-right">
                     <p class="font-medium">Kasir: <span class="text-blue-600">Budi Santoso</span></p>
-                    <p class="text-sm text-gray-500" id="currentDateTime"></p>
+                    <p class="text-sm text-gray-500" id="currentDateTime">Senin, 15 Mei 2023, 10:30 AM</p>
                 </div>
                 <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                    <img src="https://placehold.co/48" alt="Foto profil kasir" class="rounded-full">
+                    <img src="https://placehold.co/48" alt="Foto profil kasir dengan latar belakang biru" class="rounded-full">
                 </div>
             </div>
         </header>
 
+        <!-- Main Content -->
         <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Product List -->
             <div class="flex-1 bg-white rounded-lg shadow p-6">
-                <h2 class="text-xl font-semibold mb-6">Daftar Produk</h2>
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold">Daftar Produk</h2>
+                    <div class="relative w-64">
+                        <input type="text" id="searchProduct" placeholder="Cari produk..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                    </div>
+                </div>
+
+                <!-- Product Categories -->
+                <div class="flex space-x-2 mb-4 overflow-x-auto pb-2">
+                    <button class="px-4 py-2 bg-blue-600 text-white rounded-full text-sm">Semua</button>
+                    <button class="px-4 py-2 bg-gray-100 rounded-full text-sm">Makanan</button>
+                    <button class="px-4 py-2 bg-gray-100 rounded-full text-sm">Minuman</button>
+                    <button class="px-4 py-2 bg-gray-100 rounded-full text-sm">ATK</button>
+                    <button class="px-4 py-2 bg-gray-100 rounded-full text-sm">Sembako</button>
+                </div>
+
+                <!-- Product Grid -->
                 <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <!-- Product Item -->
                     <div class="product-card bg-white border rounded-lg overflow-hidden transition duration-300 cursor-pointer">
+                        <div class="relative h-40 bg-gray-100">
+                            <img src="https://placehold.co/300x200" alt="Indomie goreng rasa ayam spesial dengan tampilan kemasan merah" class="w-full h-full object-contain">
+                            <div class="absolute top-2 right-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded-full">Promo</div>
+                        </div>
                         <div class="p-3">
                             <h3 class="font-medium truncate">Indomie Goreng Spesial</h3>
-                            <p class="font-bold text-blue-600">Rp 3.500</p>
-                            <button class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700"><i class="fas fa-plus"></i></button>
+                            <p class="text-gray-500 text-sm">Makanan</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <p class="font-bold text-blue-600">Rp 3.500</p>
+                                <button class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- More Product Items -->
                     <div class="product-card bg-white border rounded-lg overflow-hidden transition duration-300 cursor-pointer">
+                        <div class="relative h-40 bg-gray-100">
+                            <img src="https://placehold.co/300x200" alt="Aqua botol air mineral kemasan 600ml dengan label biru" class="w-full h-full object-contain">
+                        </div>
                         <div class="p-3">
                             <h3 class="font-medium truncate">Aqua Botol 600ml</h3>
-                            <p class="font-bold text-blue-600">Rp 5.000</p>
-                            <button class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700"><i class="fas fa-plus"></i></button>
+                            <p class="text-gray-500 text-sm">Minuman</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <p class="font-bold text-blue-600">Rp 5.000</p>
+                                <button class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white border rounded-lg overflow-hidden transition duration-300 cursor-pointer">
+                        <div class="relative h-40 bg-gray-100">
+                            <img src="https://placehold.co/300x200" alt="Tissue Kotak Paseo kemasan warna hijau dengan kotak-kotak" class="w-full h-full object-contain">
+                        </div>
+                        <div class="p-3">
+                            <h3 class="font-medium truncate">Tissue Paseo Kotak</h3>
+                            <p class="text-gray-500 text-sm">Kebutuhan Rumah</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <p class="font-bold text-blue-600">Rp 12.500</p>
+                                <button class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white border rounded-lg overflow-hidden transition duration-300 cursor-pointer">
+                        <div class="relative h-40 bg-gray-100">
+                            <img src="https://placehold.co/300x200" alt="Rinso deterjen bubuk kemasan ungu dengan gambar bunga" class="w-full h-full object-contain">
+                        </div>
+                        <div class="p-3">
+                            <h3 class="font-medium truncate">Rinso Bubuk 500gr</h3>
+                            <p class="text-gray-500 text-sm">Sembako</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <p class="font-bold text-blue-600">Rp 15.000</p>
+                                <button class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white border rounded-lg overflow-hidden transition duration-300 cursor-pointer">
+                        <div class="relative h-40 bg-gray-100">
+                            <img src="https://placehold.co/300x200" alt="Pensil 2B Faber-Castell dengan kemasan kuning dan hitam" class="w-full h-full object-contain">
+                        </div>
+                        <div class="p-3">
+                            <h3 class="font-medium truncate">Pensil 2B Faber</h3>
+                            <p class="text-gray-500 text-sm">ATK</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <p class="font-bold text-blue-600">Rp 3.000</p>
+                                <button class="bg-blue-600 text-white w-8 h-8 rounded-full flex items-center justify-center hover:bg-blue-700">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-card bg-white border rounded-lg overflow-hidden transition duration-300 cursor-pointer">
+                        <div class="relative h-40 bg-gray-100">
+                            <img src="https://placehold.co/300x200" alt="Sari Roti tawar kemasan putih dengan label merah" class="w-full h-full object-contain">
+                            <div class="absolute top-2 right-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full">Habis</div>
+                        </div>
+                        <div class="p-3">
+                            <h3 class="font-medium truncate">Sari Roti Tawar</h3>
+                            <p class="text-gray-500 text-sm">Makanan</p>
+                            <div class="flex justify-between items-center mt-2">
+                                <p class="font-bold text-gray-400">Rp 12.000</p>
+                                <button class="bg-gray-300 text-gray-500 w-8 h-8 rounded-full flex items-center justify-center cursor-not-allowed">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Transaction Panel -->
             <div class="w-full lg:w-1/3">
+                <!-- Receipt -->
                 <div class="bg-white rounded-lg shadow p-6 mb-6">
-                    <h2 class="text-xl font-semibold">Struk Pembayaran</h2>
-                    <div id="receiptItems"></div>
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold">Struk Pembayaran</h2>
+                        <div class="flex space-x-2">
+                            <button id="printBtn" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200">
+                                <i class="fas fa-print text-gray-600"></i>
+                            </button>
+                            <button id="clearBtn" class="p-2 rounded-lg bg-gray-100 hover:bg-gray-200">
+                                <i class="fas fa-trash-alt text-gray-600"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="border-b pb-4 mb-4">
+                        <p class="text-gray-500 text-sm">Nomor Transaksi: #TRX-20230515-001</p>
+                        <p class="text-gray-500 text-sm">Tanggal: 15 Mei 2023, 10:30 AM</p>
+                    </div>
+
+                    <div class="space-y-2 max-h-96 overflow-y-auto" id="receiptItems">
+                        <!-- Sample Receipt Items -->
+                        <div class="receipt-item flex justify-between items-start py-2 border-b">
+                            <div>
+                                <p class="font-medium">Indomie Goreng Spesial</p>
+                                <p class="text-sm text-gray-500">Rp 3.500 x 2</p>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <p class="font-semibold">Rp 7.000</p>
+                                <button class="text-red-500 remove-sample">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="receipt-item flex justify-between items-start py-2 border-b">
+                            <div>
+                                <p class="font-medium">Aqua Botol 600ml</p>
+                                <p class="text-sm text-gray-500">Rp 5.000 x 1</p>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <p class="font-semibold">Rp 5.000</p>
+                                <button class="text-red-500 remove-sample">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="mt-6 pt-4 border-t">
                         <div class="flex justify-between mb-2">
                             <p>Subtotal</p>
-                            <p id="subtotal" class="font-semibold">Rp 0</p>
+                            <p class="font-semibold" id="subtotalDisplay">Rp 12.000</p>
+                        </div>
+                        <div class="flex justify-between mb-2">
+                            <p>Diskon</p>
+                            <p class="font-semibold text-green-600" id="discountDisplay">- Rp 500</p>
                         </div>
                         <div class="flex justify-between mb-4 font-bold text-lg">
                             <p>Total</p>
-                            <p id="total">Rp 0</p>
+                            <p id="totalDisplay">Rp 11.500</p>
                         </div>
                     </div>
                 </div>
 
+                <!-- Payment Panel -->
                 <div class="bg-white rounded-lg shadow p-6">
-                    <label class="block text-sm font-medium mb-1">Jumlah Bayar</label>
-                    <input id="bayar" type="number" class="w-full border rounded-lg mb-4" placeholder="0">
-                    <div class="flex justify-between mb-1">
-                        <p>Kembalian</p>
-                        <p id="kembalian" class="font-semibold text-blue-600">Rp 0</p>
+                    <h2 class="text-xl font-semibold mb-4">Pembayaran</h2>
+                    
+                    <!-- Payment Methods -->
+                    <div class="mb-6">
+                        <h3 class="font-medium mb-2">Metode Pembayaran</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <button class="py-2 px-4 border rounded-lg hover:bg-blue-50 hover:border-blue-300">
+                                <i class="fas fa-money-bill-wave mr-2"></i> Tunai
+                            </button>
+                            <button class="py-2 px-4 border rounded-lg hover:bg-blue-50 hover:border-blue-300">
+                                <i class="fas fa-credit-card mr-2"></i> Kartu
+                            </button>
+                            <button class="py-2 px-4 border rounded-lg hover:bg-blue-50 hover:border-blue-300">
+                                <i class="fab fa-gopay mr-2"></i> Gopay
+                            </button>
+                            <button class="py-2 px-4 border rounded-lg hover:bg-blue-50 hover:border-blue-300">
+                                <i class="fas fa-qrcode mr-2"></i> QRIS
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Payment Input -->
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium mb-1">Jumlah Bayar</label>
+                        <div class="relative">
+                            <span class="absolute left-3 top-1/2 transform -translate-y-1/2">Rp</span>
+                            <input id="bayarInput" type="text" class="w-full pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="0">
+                        </div>
+                    </div>
+
+                    <!-- Calculate Change -->
+                    <div class="mb-6 bg-blue-50 p-3 rounded-lg">
+                        <div class="flex justify-between mb-1">
+                            <p>Kembalian</p>
+                            <p class="font-semibold text-blue-600" id="kembalianDisplay">Rp 8.500</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="grid grid-cols-2 gap-3">
+                        <button id="cancelBtn" class="py-3 bg-gray-100 rounded-lg hover:bg-gray-200">
+                            <i class="fas fa-redo mr-2"></i> Batalkan
+                        </button>
+                        <button id="finishBtn" class="py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                            <i class="fas fa-check-circle mr-2"></i> Selesai
+                        </button>
                     </div>
                 </div>
             </div>
@@ -79,6 +289,18 @@
     </div>
 
     <script>
+        /* ========= Utility ========= */
+        function formatRp(num) {
+            if (isNaN(num)) return 'Rp 0';
+            return 'Rp ' + Number(num).toLocaleString('id-ID');
+        }
+        function parseRpString(str) {
+            if (!str) return 0;
+            const digits = (''+str).replace(/[^0-9\-]/g, '');
+            return parseInt(digits) || 0;
+        }
+
+        /* ========= DateTime ========= */
         function updateDateTime() {
             const now = new Date();
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
@@ -87,29 +309,93 @@
         updateDateTime();
         setInterval(updateDateTime, 60000);
 
+        /* ========= Receipt data & init from DOM sample ========= */
         let receipt = [];
+
+        function initReceiptFromDOM() {
+            const receiptItemsEl = document.getElementById('receiptItems');
+            const sampleItems = receiptItemsEl.querySelectorAll('.receipt-item');
+            sampleItems.forEach(itemEl => {
+                const nameEl = itemEl.querySelector('.font-medium');
+                const smallEl = itemEl.querySelector('.text-sm.text-gray-500');
+                const priceTotalEl = itemEl.querySelector('.font-semibold');
+                if (!nameEl || !smallEl) return;
+                // smallEl example: "Rp 3.500 x 2"
+                const smallText = smallEl.textContent || '';
+                const match = smallText.match(/Rp\s*([\d\.]+)\s*x\s*([\d]+)/i);
+                if (match) {
+                    const price = parseInt(match[1].replace(/\./g,'')) || 0;
+                    const qty = parseInt(match[2]) || 1;
+                    // if same product already present, add qty
+                    const existing = receipt.find(r => r.name === nameEl.textContent.trim());
+                    if (existing) existing.qty += qty;
+                    else receipt.push({ name: nameEl.textContent.trim(), price, qty });
+                } else {
+                    // fallback: try parse from priceTotalEl (total price), assume qty 1
+                    const totalText = priceTotalEl ? priceTotalEl.textContent : '';
+                    const total = parseRpString(totalText);
+                    if (total > 0) {
+                        receipt.push({ name: nameEl.textContent.trim(), price: total, qty: 1 });
+                    }
+                }
+            });
+        }
+
+        /* ========= Render Receipt ========= */
         function renderReceipt() {
             const receiptItems = document.getElementById('receiptItems');
             receiptItems.innerHTML = '';
             let subtotal = 0;
             receipt.forEach((item, index) => {
-                subtotal += item.price * item.qty;
-                receiptItems.innerHTML += `
-                    <div class="receipt-item flex justify-between items-start py-2 border-b">
-                        <div>
-                            <p class="font-medium">${item.name}</p>
-                            <p class="text-sm text-gray-500">Rp ${item.price.toLocaleString()} x ${item.qty}</p>
-                        </div>
-                        <div class="flex items-center space-x-3">
-                            <p class="font-semibold">Rp ${(item.price * item.qty).toLocaleString()}</p>
-                            <button class="text-red-500" onclick="removeItem(${index})"><i class="fas fa-times"></i></button>
-                        </div>
-                    </div>`;
+                const lineTotal = item.price * item.qty;
+                subtotal += lineTotal;
+                const div = document.createElement('div');
+                div.className = 'receipt-item flex justify-between items-start py-2 border-b';
+                div.innerHTML = `
+                    <div>
+                        <p class="font-medium">${item.name}</p>
+                        <p class="text-sm text-gray-500">Rp ${item.price.toLocaleString()} x ${item.qty}</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <p class="font-semibold">Rp ${lineTotal.toLocaleString()}</p>
+                        <button class="text-red-500 remove-btn" data-index="${index}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+                receiptItems.appendChild(div);
             });
-            document.getElementById('subtotal').textContent = `Rp ${subtotal.toLocaleString()}`;
-            document.getElementById('total').textContent = `Rp ${subtotal.toLocaleString()}`;
+
+            // update totals area (detect existing elements)
+            const subtotalEl = document.getElementById('subtotalDisplay');
+            const discountEl = document.getElementById('discountDisplay');
+            const totalEl = document.getElementById('totalDisplay');
+
+            let discount = 0;
+            if (discountEl) {
+                // discount text example: "- Rp 500"
+                discount = parseRpString(discountEl.textContent);
+                // ensure discount sign handled (it may be stored as -500 or with minus sign)
+                // parseRpString returns 500 for "- Rp 500", so enforce negative:
+                if (discount > 0 && discountEl.textContent.includes('-')) discount = -discount;
+            }
+
+            if (subtotalEl) subtotalEl.textContent = formatRp(subtotal);
+            const total = subtotal + (discount || 0);
+            if (totalEl) totalEl.textContent = formatRp(total);
+
+            // Re-attach remove listeners
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.index);
+                    removeItem(idx);
+                });
+            });
+
+            // update kembalian display calculation
             calculateChange();
         }
+
         function addToReceipt(name, price) {
             const existing = receipt.find(item => item.name === name);
             if (existing) {
@@ -118,27 +404,141 @@
                 receipt.push({ name, price, qty: 1 });
             }
             renderReceipt();
+            // small visual feedback: animate the product's icon if exists
         }
+
         function removeItem(index) {
-            receipt.splice(index, 1);
-            renderReceipt();
+            if (index >= 0 && index < receipt.length) {
+                receipt.splice(index, 1);
+                renderReceipt();
+            }
         }
+
+        /* ========= Payment & Change ========= */
         function calculateChange() {
-            const bayar = parseInt(document.getElementById('bayar').value) || 0;
-            const total = parseInt(document.getElementById('total').textContent.replace(/Rp |\./g, '')) || 0;
-            document.getElementById('kembalian').textContent = `Rp ${(bayar - total).toLocaleString()}`;
+            // find total (from DOM totalDisplay)
+            const totalEl = document.getElementById('totalDisplay');
+            const bayarel = document.getElementById('bayarInput');
+            const kembalianEl = document.getElementById('kembalianDisplay');
+            const total = parseRpString(totalEl ? totalEl.textContent : '') || 0;
+            const bayar = parseRpString(bayarel ? bayarel.value : '') || 0;
+            const change = bayar - total;
+            if (kembalianEl) kembalianEl.textContent = formatRp(change >= 0 ? change : 0);
         }
-        document.querySelectorAll('.product-card').forEach(card => {
-            const addButton = card.querySelector('button');
-            if (!addButton.classList.contains('cursor-not-allowed')) {
-                addButton.addEventListener('click', function() {
-                    const productName = card.querySelector('h3').textContent;
-                    const productPrice = parseInt(card.querySelector('p.font-bold').textContent.replace(/Rp |\./g, ''));
-                    addToReceipt(productName, productPrice);
+
+        /* ========= Buttons behavior (print, clear, finish, cancel) ========= */
+        function setupTopButtons() {
+            const printBtn = document.getElementById('printBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const finishBtn = document.getElementById('finishBtn');
+            const cancelBtn = document.getElementById('cancelBtn');
+
+            if (printBtn) {
+                printBtn.addEventListener('click', () => {
+                    window.print();
                 });
             }
-        });
-        document.getElementById('bayar').addEventListener('input', calculateChange);
+            if (clearBtn) {
+                clearBtn.addEventListener('click', () => {
+                    if (!confirm('Kosongkan semua item pada struk?')) return;
+                    receipt = [];
+                    renderReceipt();
+                    const bayarInput = document.getElementById('bayarInput');
+                    if (bayarInput) bayarInput.value = '';
+                });
+            }
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', () => {
+                    if (!confirm('Batalkan transaksi?')) return;
+                    receipt = [];
+                    renderReceipt();
+                    const bayarInput = document.getElementById('bayarInput');
+                    if (bayarInput) bayarInput.value = '';
+                });
+            }
+            if (finishBtn) {
+                finishBtn.addEventListener('click', () => {
+                    const total = parseRpString(document.getElementById('totalDisplay').textContent) || 0;
+                    const bayar = parseRpString(document.getElementById('bayarInput').value) || 0;
+                    if (receipt.length === 0) {
+                        alert('Struk kosong. Tambahkan produk terlebih dahulu.');
+                        return;
+                    }
+                    if (bayar < total) {
+                        alert('Jumlah bayar belum cukup!');
+                        return;
+                    }
+                    // success (you can extend to save to localStorage or server)
+                    alert('Transaksi berhasil! Kembalian: ' + formatRp(bayar - total));
+                    // reset receipt
+                    receipt = [];
+                    renderReceipt();
+                    document.getElementById('bayarInput').value = '';
+                });
+            }
+        }
+
+        /* ========= Wire product buttons ========= */
+        function wireProductButtons() {
+            document.querySelectorAll('.product-card').forEach(card => {
+                const addButton = card.querySelector('button');
+                if (!addButton) return;
+                if (addButton.classList.contains('cursor-not-allowed')) return; // skip disabled
+                addButton.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    // find product info inside card
+                    const nameEl = card.querySelector('h3') || card.querySelector('.font-medium');
+                    const priceEl = card.querySelector('p.font-bold') || card.querySelector('.text-gray-500');
+                    if (!nameEl || !priceEl) return;
+                    const name = nameEl.textContent.trim();
+                    const priceText = priceEl.textContent.trim();
+                    const price = parseRpString(priceText);
+                    addToReceipt(name, price);
+
+                    // icon feedback
+                    const icon = addButton.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('fa-plus');
+                        icon.classList.add('fa-check');
+                        setTimeout(() => {
+                            icon.classList.remove('fa-check');
+                            icon.classList.add('fa-plus');
+                        }, 800);
+                    }
+                });
+            });
+        }
+
+        /* ========= Payment input formatting & listener ========= */
+        function setupPaymentInput() {
+            const bayarInput = document.getElementById('bayarInput');
+            if (!bayarInput) return;
+            // Allow user to type numbers and separators, but we parse using parseRpString
+            // Update change on input
+            bayarInput.addEventListener('input', () => {
+                // optional: remove letters (keep digits and dots)
+                bayarInput.value = bayarInput.value.replace(/[^0-9\.]/g, '');
+                calculateChange();
+            });
+        }
+
+        /* ========= Init all ========= */
+        (function initAll() {
+            initReceiptFromDOM();    // preserve sample items in DOM
+            wireProductButtons();    // + buttons
+            setupTopButtons();       // print, clear, finish, cancel
+            setupPaymentInput();     // bayar field
+            renderReceipt();         // initial render (will replace sample DOM with dynamic ones)
+            // also, if there are any old sample 'remove-sample' buttons, they are replaced by renderReceipt,
+            // but in case, wire them:
+            document.querySelectorAll('.remove-sample').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // re-init from DOM first item removal: simply clear all and re-render without relying on sample
+                    receipt = [];
+                    renderReceipt();
+                });
+            });
+        })();
     </script>
 </body>
 </html>
